@@ -48,7 +48,6 @@ jobs:
     strategy:
       matrix:
         defines:
-          - ""
           - "DESKTOP_APP_DISABLE_X11_INTEGRATION"
 
     env:
