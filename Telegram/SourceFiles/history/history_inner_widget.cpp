@@ -558,14 +558,7 @@ void HistoryInner::setupSharingDisallowed() {
 }
 
 bool HistoryInner::hasSelectRestriction() const {
-	if (!_sharingDisallowed.current()) {
-		return false;
-	} else if (const auto chat = _peer->asChat()) {
-		return !chat->canDeleteMessages();
-	} else if (const auto channel = _peer->asChannel()) {
-		return !channel->canDeleteMessages();
-	}
-	return true;
+	return false;
 }
 
 void HistoryInner::messagesReceived(
@@ -2847,52 +2840,27 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
 }
 
 bool HistoryInner::hasCopyRestriction(HistoryItem *item) const {
-	return !_peer->allowsForwarding() || (item && item->forbidsForward());
+	return false;
 }
 
 bool HistoryInner::hasCopyMediaRestriction(
 		not_null<HistoryItem*> item) const {
-	return hasCopyRestriction(item) || item->forbidsSaving();
+	return false;
 }
 
 bool HistoryInner::showCopyRestriction(HistoryItem *item) {
-	if (!hasCopyRestriction(item)) {
-		return false;
-	}
-	_controller->showToast(_peer->isBroadcast()
-		? tr::lng_error_nocopy_channel(tr::now)
-		: tr::lng_error_nocopy_group(tr::now));
-	return true;
+	return false;
 }
 
 bool HistoryInner::showCopyMediaRestriction(not_null<HistoryItem*> item) {
-	if (!hasCopyMediaRestriction(item)) {
-		return false;
-	}
-	_controller->showToast(_peer->isBroadcast()
-		? tr::lng_error_nocopy_channel(tr::now)
-		: tr::lng_error_nocopy_group(tr::now));
-	return true;
+	return false;
 }
 
 bool HistoryInner::hasCopyRestrictionForSelected() const {
-	if (hasCopyRestriction()) {
-		return true;
-	}
-	for (const auto &[item, selection] : _selected) {
-		if (item && item->forbidsForward()) {
-			return true;
-		}
-	}
 	return false;
 }
 
 bool HistoryInner::showCopyRestrictionForSelected() {
-	for (const auto &[item, selection] : _selected) {
-		if (showCopyRestriction(item)) {
-			return true;
-		}
-	}
 	return false;
 }
 

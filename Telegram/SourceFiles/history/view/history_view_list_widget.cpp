@@ -1515,73 +1515,31 @@ bool ListWidget::isEmpty() const {
 }
 
 bool ListWidget::hasCopyRestriction(HistoryItem *item) const {
-	return _delegate->listCopyRestrictionType(item)
-		!= CopyRestrictionType::None;
+	return false;
 }
 
 bool ListWidget::hasCopyMediaRestriction(not_null<HistoryItem*> item) const {
-	return _delegate->listCopyMediaRestrictionType(item)
-		!= CopyRestrictionType::None;
+	return false;
 }
 
 bool ListWidget::showCopyRestriction(HistoryItem *item) {
-	const auto type = _delegate->listCopyRestrictionType(item);
-	if (type == CopyRestrictionType::None) {
-		return false;
-	}
-	_delegate->listUiShow()->showToast((type == CopyRestrictionType::Channel)
-		? tr::lng_error_nocopy_channel(tr::now)
-		: tr::lng_error_nocopy_group(tr::now));
-	return true;
+	return false;
 }
 
 bool ListWidget::showCopyMediaRestriction(not_null<HistoryItem*> item) {
-	const auto type = _delegate->listCopyMediaRestrictionType(item);
-	if (type == CopyRestrictionType::None) {
-		return false;
-	}
-	_delegate->listUiShow()->showToast((type == CopyRestrictionType::Channel)
-		? tr::lng_error_nocopy_channel(tr::now)
-		: tr::lng_error_nocopy_group(tr::now));
-	return true;
+	return false;
 }
 
 bool ListWidget::hasCopyRestrictionForSelected() const {
-	if (hasCopyRestriction()) {
-		return true;
-	}
-	if (_selected.empty()) {
-		if (_selectedTextItem && _selectedTextItem->forbidsForward()) {
-			return true;
-		}
-	}
-	for (const auto &[itemId, selection] : _selected) {
-		if (const auto item = session().data().message(itemId)) {
-			if (item->forbidsForward()) {
-				return true;
-			}
-		}
-	}
 	return false;
 }
 
 bool ListWidget::showCopyRestrictionForSelected() {
-	if (_selected.empty()) {
-		if (_selectedTextItem && showCopyRestriction(_selectedTextItem)) {
-			return true;
-		}
-	}
-	for (const auto &[itemId, selection] : _selected) {
-		if (showCopyRestriction(session().data().message(itemId))) {
-			return true;
-		}
-	}
 	return false;
 }
 
 bool ListWidget::hasSelectRestriction() const {
-	return _delegate->listSelectRestrictionType()
-		!= CopyRestrictionType::None;
+	return false;
 }
 
 Element *ListWidget::lookupItemByY(int y) const {
