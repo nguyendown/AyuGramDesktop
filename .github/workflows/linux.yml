@@ -1,6 +1,7 @@
 name: Linux.
 
 on:
+  workflow_dispatch:
   push:
     paths-ignore:
       - 'docs/**'
@@ -47,7 +48,6 @@ jobs:
     strategy:
       matrix:
         defines:
-          - ""
           - "DESKTOP_APP_DISABLE_X11_INTEGRATION"
 
     env:
@@ -66,8 +66,8 @@ jobs:
       - name: First set up.
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-          docker pull ghcr.io/$GITHUB_REPOSITORY/centos_env
-          docker tag ghcr.io/$GITHUB_REPOSITORY/centos_env tdesktop:centos_env
+          docker pull ghcr.io/telegramdesktop/tdesktop/centos_env
+          docker tag ghcr.io/telegramdesktop/tdesktop/centos_env tdesktop:centos_env
 
       - name: Telegram Desktop build.
         run: |
