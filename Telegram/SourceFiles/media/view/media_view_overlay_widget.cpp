@@ -1042,26 +1042,11 @@ QSize OverlayWidget::flipSizeByRotation(QSize size) const {
 }
 
 bool OverlayWidget::hasCopyMediaRestriction(bool skipPremiumCheck) const {
-	if (const auto story = _stories ? _stories->story() : nullptr) {
-		return skipPremiumCheck
-			? !story->canDownloadIfPremium()
-			: !story->canDownloadChecked();
-	}
-	return (_history && !_history->peer->allowsForwarding())
-		|| (_message && _message->forbidsSaving());
+	return false;
 }
 
 bool OverlayWidget::showCopyMediaRestriction(bool skipPRemiumCheck) {
-	if (!hasCopyMediaRestriction(skipPRemiumCheck)) {
-		return false;
-	} else if (_stories) {
-		uiShow()->showToast(tr::lng_error_nocopy_story(tr::now));
-	} else if (_history) {
-		uiShow()->showToast(_history->peer->isBroadcast()
-			? tr::lng_error_nocopy_channel(tr::now)
-			: tr::lng_error_nocopy_group(tr::now));
-	}
-	return true;
+	return false;
 }
 
 bool OverlayWidget::videoShown() const {
